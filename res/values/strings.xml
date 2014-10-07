@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Parking Moto</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    
+    <string name="arround_me">Autour de moi</string>
+    <string name="parking_name">Nom du parking</string>
+
+</resources>
