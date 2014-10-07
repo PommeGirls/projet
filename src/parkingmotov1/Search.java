@@ -5,6 +5,7 @@ package parkingmotov1;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class Search extends Fragment {
-
-	private FragmentTabHost tab;
+	private static View view;
 	
 	private TextView searchField;
 	 private GoogleMap googleMap;
@@ -34,12 +34,28 @@ public class Search extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+    	if(container == null)
+    		return null;
     	
+    	if(view != null){
+    		ViewGroup parent = (ViewGroup) view.getParent();
+    		if(parent != null)
+    			parent.removeView(view);
+    	}
+    	
+    	try {
+    		view = LayoutInflater.from(getActivity()).inflate(R.layout.search,
+   	             null);
+    	}catch(InflateException e){
+    		System.out.println(e);
+    	}
+    	/*
 	   	View v = LayoutInflater.from(getActivity()).inflate(R.layout.search,
 	             null);
+	     */
 	    getActivity().getActionBar().setTitle("Rechercher un parking");
 	    
-	    searchField = (TextView) v.findViewById(R.id.searchField);
+	    searchField = (TextView) view.findViewById(R.id.searchField);
 	    /*
 	    v.findViewById(R.id.searchGo).setOnClickListener(
 				new View.OnClickListener() {
@@ -49,7 +65,7 @@ public class Search extends Fragment {
 					}
 				});
        */
-	    return v;
+	    return view;
 
     }
     

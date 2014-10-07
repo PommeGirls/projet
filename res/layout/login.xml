@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="124dp"
         android:layout_margin="20dp"
-        android:src="@drawable/icone_parking_moto" />
+        android:src="@drawable/ic_launcher" />
 
     <EditText
         android:id="@+id/email"
