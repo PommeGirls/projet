@@ -21,8 +21,7 @@ public class MainActivity extends ActionBarActivity {
     	 super.onCreate(savedInstanceState);
  		 Properties properties = new Properties();
  		 
-    	 if( properties.getProperty("api-key", "none") != "none"
-			 && properties.getProperty("user-id", "defaultThing") != "none" ){
+    	 if( properties.getProperty("PREF_USER_APIKEY", "none") != "none"){
     		 connected = true;
     	 }
     	 
@@ -46,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
           b = new Bundle();
           b.putString("key", "Favoris");
           mTabHost.addTab(mTabHost.newTabSpec("favorites").setIndicator("", getResources().getDrawable(R.drawable.favorites))
-                              ,Login.class
+                              ,Favorites.class
                               ,b);
 
           b = new Bundle();

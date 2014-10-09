@@ -23,11 +23,10 @@ import android.widget.Toast;
 
 public class Login extends Fragment {
 
-	private boolean error;
-	private String errorMessage = "";
+	private EditText eEmail;
+	private EditText ePassword;
 	
-	private String sEmail;
-	private String sPassword;
+	private UserRequest ur;
 
 	public Login() {
 
@@ -36,6 +35,7 @@ public class Login extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+    	ur = new UserRequest(getActivity().getApplicationContext());
 	}
 
 	@Override
@@ -45,24 +45,27 @@ public class Login extends Fragment {
 
 		getActivity().getActionBar().setTitle("Connexion");
 
-		sPassword = ((EditText) v.findViewById(R.id.password)).getText().toString();
-		sEmail = ((EditText) v.findViewById(R.id.email)).getText().toString();
+		ePassword = (EditText) v.findViewById(R.id.password);
+		eEmail = (EditText) v.findViewById(R.id.email);
 
-		error = false;
-		/*
-		if (sPassword.equals("") || sEmail.equals("")) {
-			error = true;
-			errorMessage = "Veuillez renseigner les deux champs : e-mail et mot de passe.";
-		}else if(!sEmail.contains("@")){
-			error = true;
-			errorMessage = "Veuillez vérifier votre adresse e-mail.";
-		}
-		*/
-		
 		v.findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						boolean error = false;
+						String errorMessage = "";
+						  
+						String sEmail = eEmail.getText().toString();
+						String sPassword = ePassword.getText().toString();
+						
+						if (sPassword.equals("") || sEmail.equals("")) {
+							error = true;
+							errorMessage = "Veuillez renseigner les deux champs : e-mail et mot de passe.";
+						}else if(!sEmail.contains("@")){
+							error = true;
+							errorMessage = "Veuillez vérifier votre adresse e-mail.";
+						}
+						
 						if(!error){
 							doLogin(sEmail, sPassword);
 						}else{
@@ -81,7 +84,6 @@ public class Login extends Fragment {
 	}
 	
 	private void doLogin(String email, String pwd){
-    	UserRequest ur = new UserRequest(getActivity().getApplicationContext());
     	
     	// Listener du success : arrive ici si la requête a bien répondu
     	Listener<JSONObject> suListener = new Listener<JSONObject>(){
