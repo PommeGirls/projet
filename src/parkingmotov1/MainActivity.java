@@ -9,20 +9,20 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
 
 public class MainActivity extends ActionBarActivity {
 
 	private FragmentTabHost mTabHost;
-	public boolean connected = false;
+	private MyApp myApp;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	 super.onCreate(savedInstanceState);
+    	 myApp = ((MyApp)getApplicationContext());
  		 Properties properties = new Properties();
  		 
-    	 if( properties.getProperty("PREF_USER_APIKEY", "none") != "none"){
-    		 connected = true;
+    	 if(properties.getProperty("PREF_USER_APIKEY", "none") != "none"){
+    		myApp.setIsConnected(true);
     	 }
     	 
          setContentView(R.layout.bottom_tabs);
@@ -45,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
           b = new Bundle();
           b.putString("key", "Favoris");
           mTabHost.addTab(mTabHost.newTabSpec("favorites").setIndicator("", getResources().getDrawable(R.drawable.favorites))
-                              ,Favorites.class
+                              ,ParkingDetail.class
                               ,b);
 
           b = new Bundle();

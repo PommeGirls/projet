@@ -5,11 +5,12 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    
 	<ListView
 	    android:id="@+id/lvListe"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent">
+	    android:layout_height="fill_parent"
+	    android:layout_margin="3dp"
+	    android:padding="10dp" >
 	    
 	</ListView>
 	    

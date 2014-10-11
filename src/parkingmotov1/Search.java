@@ -2,13 +2,16 @@ package parkingmotov1;
 
 
 
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import webservice.ParkingRequest;
+import webservice.UserRequest;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +19,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.example.parkingmotov1.R;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Search extends Fragment {
 	private static View view;
@@ -67,9 +74,9 @@ public class Search extends Fragment {
 					@Override
 					public void onClick(View view) {
 						String searchTerm = searchField.getText().toString();
-						if(!searchTerm.equals("")){
+						//if(!searchTerm.equals("")){
 							doSearch(searchTerm);
-						}
+						//}
 					}
 				});
 	    return view;
@@ -90,20 +97,42 @@ public class Search extends Fragment {
     private void doSearch(String address){
     	
     	// Listener du success : arrive ici si la requête a bien répondu
-    	Listener<JSONObject> suListener = new Listener<JSONObject>(){
+    	Listener<String> suListener = new Listener<String>(){
 
 			@Override
-			public void onResponse(JSONObject json) {
+			public void onResponse(String json) {
 				try {
-					boolean error = json.getBoolean("error");
-					if(error){
-						String message = json.getString("message");
-						//Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-					}else{
-						// TODO : désactiver champs et bouton valider
-						//Toast.makeText(getActivity(), "Connexion en cours ...", Toast.LENGTH_LONG).show();
+					JSONArray obj = new JSONArray(json);
+					
+					for(int i = 0 ; i < 3 ; i++){
+						JSONObject parking = (JSONObject) obj.get(i);
+						
+						long longitude = parking.getLong("longitude");
+						long latitude = parking.getLong("latitude");
+						String name = parking.getString("name");
+						String snippet = parking.getString("destination");
+						
+						MarkerOptions m = new MarkerOptions()
+									        .position(new LatLng(latitude, longitude))
+									        .title(name)
+									        .snippet(snippet);
+						googleMap.addMarker(m);
 					}
+					 googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+
+					        @Override
+					        public void onInfoWindowClick(Marker marker) {
+
+					            try {
+					            	Toast.makeText(getActivity(), marker.toString(), Toast.LENGTH_LONG).show();
+					            } catch (ArrayIndexOutOfBoundsException e) {
+					                Log.e("ArrayIndexOutOfBoundsException", " Occured");
+					            }
+
+					        }
+					    });
 				} catch (JSONException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -114,10 +143,9 @@ public class Search extends Fragment {
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				Toast.makeText(getActivity(), error.toString() , Toast.LENGTH_LONG).show();
+				System.out.println(error);
 			}
     	};
-    	
     	// Appel au ws
     	pr.getParkingsFromAddress(suListener, erListener, address);
     }

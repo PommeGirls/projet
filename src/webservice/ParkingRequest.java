@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import android.content.Context;
 
@@ -22,12 +23,25 @@ public class ParkingRequest extends RequestManager {
 		return getAbsoluteUrl() + suffixUrl;
 	}
 	
-	public void getParkingsFromAddress(Listener<JSONObject> successListener,
+	public void getParkingsFromAddress(Listener<String> successListener,
 			ErrorListener errorListener, String address) {
-		// TODO : ajout header apikey
-		String url = getUrl(URL_PARKINGS) + "?from=" + address;
+		
+		String url = getUrl(URL_PARKINGS) + "?from=" + "toto";
 
-		JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+		StringRequest request1 = new StringRequest(Request.Method.POST,
+				url, successListener, errorListener);
+		
+		boolean ok = addRequest(request1);
+		if (!ok)
+			errorListener.onErrorResponse(null);
+		
+	}
+	
+	public void getParkingsFromId(Listener<JSONObject> successListener,
+			ErrorListener errorListener, int id) {
+		String url = getUrl(URL_PARKINGS) + "/" + id;
+		
+		JsonObjectRequest request = new JsonObjectRequest(
 				url, null, successListener, errorListener);
 		boolean ok = addRequest(request);
 		if (!ok)
