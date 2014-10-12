@@ -28,10 +28,6 @@ public class Login extends Fragment {
 	
 	private UserRequest ur;
 
-	public Login() {
-
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

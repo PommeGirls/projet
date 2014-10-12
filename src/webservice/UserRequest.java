@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 public class UserRequest extends RequestManager {
 	public static final String TAG = "UserRequest";
 
+	private static final String URL_USER = "users/";
 	private static final String URL_AUTHENTICATION = "login";
 	private static final String URL_RANKING = "ranking";
 	
@@ -40,40 +41,13 @@ public class UserRequest extends RequestManager {
 
 		JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
 				url, null, successListener, errorListener);
-		/*
-		JsonObjectRequest request = new JsonObjectRequest(
-				Request.Method.POST, url, null,
-				new Response.Listener<JSONObject>() {
-
-					@Override
-					public void onResponse(JSONObject response) {
-						Log.d(TAG, response.toString());
-					}
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError response) {
-						// TODO Auto-generated method stub
-						Log.d(TAG, response.toString());
-					}
-				}) {
-
-			@Override
-			protected Map<String, String> getParams() {
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("email", "postsylvia@gmail.com");
-				params.put("password", "postsylvia");
-
-				return params;
-			}
-
-		};
-		*/
+	
 		boolean ok = addRequest(request);
 		if (!ok)
 			errorListener.onErrorResponse(null);
 	}
 	
+	// Récupération du classement
 	public void getRanking(Listener<JSONArray> successListener,
 			ErrorListener errorListener) {
 		
@@ -86,41 +60,24 @@ public class UserRequest extends RequestManager {
 			errorListener.onErrorResponse(null);
 		
 	}
-	/*
-	 * public void getUser(Listener<JSONArray> successListener, ErrorListener
-	 * errorListener, int userId) { String url = getUrl(URL_TASKS_USER) +
-	 * userId;
-	 * 
-	 * JsonArrayRequest request = new JsonArrayRequest(url, successListener,
-	 * errorListener);
-	 * 
-	 * addRequest(request); }
-	 * 
-	 * public void postInscription(Listener<JSONObject> successListener,
-	 * ErrorListener errorListener, User user) { String url =
-	 * getUrl(URL_REGISTER);
-	 * 
-	 * JSONObject jsonParams = UserParser.parseUserToJson(user);
-	 * 
-	 * Log.v(TAG, "PARAMS = "+jsonParams); JsonObjectRequest request = new
-	 * JsonObjectRequest(url, jsonParams, successListener, errorListener);
-	 * 
-	 * boolean ok = addRequest(request); if (!ok)
-	 * errorListener.onErrorResponse(null); }
-	 * 
-	 * public void postUpdate(Listener<JSONObject> successListener,
-	 * ErrorListener errorListener, User user) { String url =
-	 * getUrl(URL_UPDATE);
-	 * 
-	 * // final Map<String, String> params = UserParser.parseUserToMap(user);
-	 * JSONObject jsonParams = UserParser.parseUserToJson(user);
-	 * 
-	 * Log.v(TAG, "PARAMS = "+jsonParams); JsonObjectRequest request = new
-	 * JsonObjectRequest(url, jsonParams, successListener, errorListener); // {
-	 * // @Override // protected Map<String,String> getParams() { // return
-	 * params; // } // };
-	 * 
-	 * boolean ok = addRequest(request); if (!ok)
-	 * errorListener.onErrorResponse(null); }
-	 */
+	
+	// Récupération des informations de compte de l'utilisateur
+	public void getUser(Listener<JSONObject> successListener,
+			ErrorListener errorListener, int id) {
+		String url = getUrl(URL_USER) + id;
+		
+		JsonObjectRequest request = new JsonObjectRequest(
+				url, null, successListener, errorListener){
+		    @Override
+		    public HashMap<String, String> getHeaders() {
+		        HashMap<String, String> params = new HashMap<String, String>();
+		        params.put("Authorization", "da40ba9c0d");
+		        return params;
+		    }
+		};
+		boolean ok = addRequest(request);
+		if (!ok)
+			errorListener.onErrorResponse(null);
+	}
+	
 }

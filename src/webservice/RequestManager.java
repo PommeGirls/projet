@@ -30,7 +30,7 @@ public class RequestManager {
 		return BASE_URL;
 	}
 	
-	//Stop all request
+	// Arrête toutes les requêtes
 	public void stop() {
 		mRequestQueue.cancelAll(mContext);
 	}
@@ -39,13 +39,13 @@ public class RequestManager {
 		return mRequestQueue;
 	}
 	
-	//Init Volley pool request
+	// Initialisation du pool de requete
 	public void initPoolRequest(Context context) {
         mRequestQueue = Volley.newRequestQueue(context);
         mRequestQueue.start();
 	}
 	
-	//Send Request
+	// Envoie de la requete
 	public boolean addRequest(Request request) {
 		if (isConnected(mContext)) {
 			Log.v(TAG, "URL = "+ request.getUrl());
@@ -57,17 +57,17 @@ public class RequestManager {
 			return false;
 	}
 	
-	//Check if connection possible
+	// Vérifier que la connexion ests possible
 	public static boolean isConnected(Context context) {
 		if (context != null) {
 	        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	        // Need permission : android.permission.ACCESS_NETWORK_STATE
+	        // Permission obligatoire : android.permission.ACCESS_NETWORK_STATE
 	        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 	
 	        if (networkInfo != null && networkInfo.isConnected()) {
 	            return true;
 	        } else {
-	            // display error
+	            // Affichage de l'erreur
 	        	if (context != null)
 	        		Toast.makeText(context, "Network Error", Toast.LENGTH_LONG).show();
 	            return false;

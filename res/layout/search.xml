@@ -15,13 +15,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="17dp"
-                android:textColor="#ffffff"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/round_corner"
                 android:drawableLeft="@drawable/ic_action_place"
                 android:text="@string/arround_me"
+                android:textColor="#ffffff"
                 android:color="#FFFFFF" />
-
 
             <ImageButton
                 android:id="@+id/searchGo"
@@ -30,7 +29,7 @@
                 android:layout_alignBottom="@+id/searchField"
                 android:layout_alignParentRight="true"
                 android:layout_weight="0.74"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/round_corner"
                 android:src="@drawable/ic_action_search" />
 
@@ -41,8 +40,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignRight="@+id/aroundMe"
                 android:layout_below="@+id/aroundMe"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1.12" />
 
         </RelativeLayout>
@@ -50,6 +49,7 @@
 		    android:name="com.google.android.gms.maps.SupportMapFragment"
 		    android:id="@+id/map_fragment2"
 		    android:layout_weight="1"
+		    android:layout_marginTop="5dp"
 		    android:layout_width="match_parent"
 		    android:layout_height="0dp"
 		    />

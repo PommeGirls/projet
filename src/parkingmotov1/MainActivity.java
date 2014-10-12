@@ -14,68 +14,74 @@ public class MainActivity extends ActionBarActivity {
 
 	private FragmentTabHost mTabHost;
 	private MyApp myApp;
-	
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-    	 super.onCreate(savedInstanceState);
-    	 myApp = ((MyApp)getApplicationContext());
- 		 Properties properties = new Properties();
- 		 
-    	 if(properties.getProperty("PREF_USER_APIKEY", "none") != "none"){
-    		myApp.setIsConnected(true);
-    	 }
-    	 
-         setContentView(R.layout.bottom_tabs);
 
-          mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-          mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-          Bundle b = new Bundle();
-          b.putString("key", "Rechercher");
-          mTabHost.addTab(mTabHost.newTabSpec("search").setIndicator("", getResources().getDrawable(R.drawable.search))
-                              ,Search.class
-                              ,b);
+		myApp = ((MyApp) getApplicationContext());
 
-          b = new Bundle();
-          b.putString("key", "Ajouter un parking");
-          mTabHost.addTab(mTabHost.newTabSpec("addParking").setIndicator("", getResources().getDrawable(R.drawable.add_parking))
-                              ,AddParking.class
-                              ,b);
+		Properties properties = new Properties();
+		if (properties.getProperty("PREF_USER_APIKEY", "none") != "none") {
+			myApp.setIsConnected(true);
+		}
 
-          b = new Bundle();
-          b.putString("key", "Favoris");
-          mTabHost.addTab(mTabHost.newTabSpec("favorites").setIndicator("", getResources().getDrawable(R.drawable.favorites))
-                              ,ParkingDetail.class
-                              ,b);
+		Bundle b;
+		setContentView(R.layout.bottom_tabs);
 
-          b = new Bundle();
-          b.putString("key", "Classement");
-          mTabHost.addTab(mTabHost.newTabSpec("ranking").setIndicator("", getResources().getDrawable(R.drawable.ranking))
-                              ,Ranking.class
-                              ,b);
+		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+		mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
-          b = new Bundle();
-          b.putString("key", "Mon Compte");
-          mTabHost.addTab(mTabHost.newTabSpec("myAccount").setIndicator("", getResources().getDrawable(R.drawable.account))
-                              ,MyAccount.class
-                              ,b);
-         
-    }
+		b = new Bundle();
+		b.putString("key", "Rechercher");
+		mTabHost.addTab(
+				mTabHost.newTabSpec("search").setIndicator("",
+						getResources().getDrawable(R.drawable.search)),
+				Search.class, b);
 
+		b = new Bundle();
+		b.putString("key", "Ajouter un parking");
+		mTabHost.addTab(
+				mTabHost.newTabSpec("addParking").setIndicator("",
+						getResources().getDrawable(R.drawable.add_parking)),
+				AddParking.class, b);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	 getMenuInflater().inflate(R.menu.main, menu);
-         return true;
-    }
+		b = new Bundle();
+		b.putString("key", "Favoris");
+		mTabHost.addTab(
+				mTabHost.newTabSpec("favorites").setIndicator("",
+						getResources().getDrawable(R.drawable.favorites)),
+				Favorites.class, b);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+		b = new Bundle();
+		b.putString("key", "Classement");
+		mTabHost.addTab(
+				mTabHost.newTabSpec("ranking").setIndicator("",
+						getResources().getDrawable(R.drawable.ranking)),
+				Ranking.class, b);
+
+		b = new Bundle();
+		b.putString("key", "Mon Compte");
+		mTabHost.addTab(
+				mTabHost.newTabSpec("myAccount").setIndicator("",
+						getResources().getDrawable(R.drawable.account)),
+				MyAccount.class, b);
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 }

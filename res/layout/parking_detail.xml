@@ -30,15 +30,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:textStyle="bold"
             android:text="Adresse" />
 
         <TextView
             android:id="@+id/parkingAddresse"
-            android:layout_width="299dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:gravity="right"
-            android:inputType="textMultiLine" />
+            android:gravity="right" />
     </LinearLayout>
 
     <LinearLayout
@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:textStyle="bold"
             android:text="Téléphone" />
 
         <TextView
@@ -73,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:textStyle="bold"
             android:text="Nombre de places" />
 
         <TextView
@@ -89,6 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
 		android:layout_marginLeft="8dp"
+        android:textStyle="bold"
         android:text="" />
 
     <TextView
@@ -97,6 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
 		android:layout_marginLeft="8dp"
+        android:textStyle="bold"
         android:text="" />
 
     <TextView
@@ -105,6 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
 		android:layout_marginLeft="8dp"
+        android:textStyle="bold"
         android:text="" />
 
     <TextView
@@ -113,10 +118,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
 		android:layout_marginLeft="8dp"
+        android:textStyle="bold"
         android:text="" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/goThere"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
