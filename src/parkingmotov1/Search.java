@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.SyncStateContract.Constants;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -55,7 +56,6 @@ public class Search extends Fragment {
 			Bundle savedInstanceState) {
 		if (container == null)
 			return null;
-
 		if (view != null) {
 			ViewGroup parent = (ViewGroup) view.getParent();
 			if (parent != null)
@@ -92,7 +92,6 @@ public class Search extends Fragment {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						
 						LocationManager locationManager = (LocationManager) getActivity()
 								.getApplicationContext()
 								.getSystemService(
@@ -104,6 +103,9 @@ public class Search extends Fragment {
 								.getLastKnownLocation(provider);
 						double lat = location.getLatitude();
 						double lng = location.getLongitude();
+						
+						
+						
 						doSearch(lat + "," + lng, false);
 					}
 				});
@@ -137,13 +139,11 @@ public class Search extends Fragment {
 	private void doSearch(String address, boolean isAddress) {
 
 		Listener<String> suListener = new Listener<String>() {
-
 			@Override
 			public void onResponse(String json) {
 				try {
 					JSONArray obj = new JSONArray(json);
-
-					for (int i = 0; i <= json.length(); i++) {
+					for (int i = 0; i < obj.length(); i++) {
 
 						JSONObject parking = (JSONObject) obj.get(i);
 
@@ -158,8 +158,14 @@ public class Search extends Fragment {
 								.title(name).snippet(snippet);
 						googleMap.addMarker(m);
 						cache.put(name, id);
-					}
+						if(i == 0){
+							LatLng coordinate = new LatLng(latitude, longitude);
+							CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(
+									coordinate, 12);
+							googleMap.animateCamera(yourLocation);
 
+						}
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -168,8 +174,8 @@ public class Search extends Fragment {
 
 		ErrorListener erListener = new ErrorListener() {
 
-			@Override
 			public void onErrorResponse(VolleyError error) {
+				error.printStackTrace();
 				Toast.makeText(getActivity(),
 						"L'adresse n'a pas été reconnu ou il n'existe pas de parking proche de cette adresse, veuillez réessayer",
 						Toast.LENGTH_LONG).show();
@@ -177,7 +183,6 @@ public class Search extends Fragment {
 		};
 		if(isAddress)
 			address = address.replaceAll(",", " ");
-		System.out.println(address);
 		pr.getParkingsFromAddress(suListener, erListener, address);
 	}
 
@@ -229,8 +234,7 @@ public class Search extends Fragment {
 
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-				FragmentTransaction ft = getFragmentManager()
-						.beginTransaction();
+				FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 				ft.replace(R.id.realtabcontent,
 						new ParkingDetail(cache.get(marker.getTitle())));
 				ft.addToBackStack(null);

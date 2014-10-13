@@ -5,10 +5,13 @@ import java.util.Properties;
 import com.example.parkingmotov1.R;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TabHost.OnTabChangeListener;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -66,7 +69,32 @@ public class MainActivity extends ActionBarActivity {
 				mTabHost.newTabSpec("myAccount").setIndicator("",
 						getResources().getDrawable(R.drawable.account)),
 				MyAccount.class, b);
-		
+		/*
+		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
+			
+			@Override
+			public void onTabChanged(String tabId) {
+				Fragment f = new Fragment();
+				
+				if(tabId.equals("search"))
+					f = new Search();
+				if(tabId.equals("addParking"))
+					f = new AddParking();
+				if(tabId.equals("favorites"))
+					f = new Favorites();
+				if(tabId.equals("ranking"))
+					f = new Ranking();
+				if(tabId.equals("myAccount"))
+					f = new MyAccount();
+				
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				ft.replace(R.id.realtabcontent, f);
+				ft.addToBackStack(null);
+				ft.commit();
+				
+			}
+		});
+		*/
 	}
 
 	@Override

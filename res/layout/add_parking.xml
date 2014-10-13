@@ -6,24 +6,24 @@
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp" >
-
+    
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="431dp"
         android:layout_weight="0.49" >
-
+       
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/Switch03"
+            android:layout_below="@+id/parkingFree"
             android:layout_marginTop="16dp"
             android:text="Téléphone"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/parkingPhone"
             android:layout_width="139dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textView2"
@@ -37,13 +37,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editText2"
+            android:layout_below="@+id/parkingPhone"
             android:layout_marginTop="16dp"
             android:text="Nombre de place"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/parkingPlaces"
             android:layout_width="89dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -52,51 +52,40 @@
             android:inputType="numberDecimal" />
 
         <Switch
-            android:id="@+id/Switch01"
+            android:id="@+id/parkingAttached"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/Switch02"
+            android:layout_below="@+id/parkingPublic"
             android:layout_marginTop="16dp"
             android:text="Avec attache" />
 
         <Switch
-            android:id="@+id/Switch02"
+            android:id="@+id/parkingPublic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/switch1"
+            android:layout_below="@+id/parkingOutside"
             android:layout_marginTop="14dp"
             android:text="Public" />
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/parkingOutside"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editText1"
+            android:layout_below="@+id/parkingName"
             android:layout_marginTop="14dp"
             android:text="Intérieur" />
 
         <Switch
-            android:id="@+id/Switch03"
+            android:id="@+id/parkingFree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/Switch01"
+            android:layout_below="@+id/parkingAttached"
             android:layout_marginTop="16dp"
             android:text="Gratuit" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView1"
-            android:layout_alignRight="@+id/Switch01"
-            android:layout_below="@+id/editText3"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/round_corner"
-            android:text="Ajouter" />
 
         <TextView
             android:id="@+id/textView1"
@@ -109,16 +98,25 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/parkingName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/textView1"
             android:ems="10" >
-
             <requestFocus />
         </EditText>
+
+        <Button
+            android:id="@+id/parkingAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/round_corner"
+            android:text="Ajouter" />
 
     </RelativeLayout>
 

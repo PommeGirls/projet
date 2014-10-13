@@ -45,7 +45,7 @@ public class Ranking extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		
 		v = LayoutInflater.from(getActivity()).inflate(R.layout.ranking, null);
 		getActivity().getActionBar().setTitle("Classement");
 		
@@ -104,7 +104,6 @@ public class Ranking extends Fragment {
 		ErrorListener erListener = new ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				System.out.println(error.toString());
 				Toast.makeText(getActivity(), error.toString(),
 						Toast.LENGTH_LONG).show();
 			}

@@ -92,7 +92,7 @@ public class Login extends Fragment {
 						String message = json.getString("message");
 						Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
 					}else{
-						// TODO : désactiver champs et bouton valider
+						// TODO : changer de vue
 						Toast.makeText(getActivity(), "Connexion en cours ...", Toast.LENGTH_LONG).show();
 						
 						savePref(json.getString("id"), json.getString("login"), json.getString("email"), json.getString("apiKey"));

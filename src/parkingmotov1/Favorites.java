@@ -159,8 +159,7 @@ public class Favorites extends Fragment {
 
 		switch (item.getItemId()) {
 			case ACTION_SEE_DETAILS:
-				FragmentTransaction ft = getFragmentManager()
-						.beginTransaction();
+				FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 				ft.replace(R.id.realtabcontent,
 						new ParkingDetail(idAL.get(info.position)));
 				ft.addToBackStack(null);

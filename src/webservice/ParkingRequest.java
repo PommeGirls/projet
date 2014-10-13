@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.android.volley.Request;
-import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -20,6 +19,7 @@ public class ParkingRequest extends RequestManager {
 
 	private static final String URL_PARKINGS = "parkings";
 	private static final String URL_PARKINGS_FAVORITES = "parkingsFavorites/";
+	private static final String URL_CREATE_PARKING = "createParking";
 
 	public ParkingRequest(Context context) {
 		super(context);
@@ -69,6 +69,7 @@ public class ParkingRequest extends RequestManager {
 		    @Override
 		    public HashMap<String, String> getHeaders() {
 		        HashMap<String, String> params = new HashMap<String, String>();
+		        //TODO
 		        params.put("Authorization", "da40ba9c0d");
 		        return params;
 		    }
@@ -77,5 +78,23 @@ public class ParkingRequest extends RequestManager {
 		boolean ok = addRequest(request);
 		if (!ok)
 			errorListener.onErrorResponse(null);
+	}
+	
+	// Ajout d'un nouveau parking
+	public void addNewParking(Listener<JSONObject> successListener,
+			ErrorListener errorListener, String name, double lat, double lng,  
+			int places, int outside, int free, int prive, int attached, String phone )
+	{
+		String url = getUrl(URL_CREATE_PARKING) + "?name=" + name + "&longitude=" + lng + "&latitude=" + lat 
+				+"&nbSpaces=" + places +"&outside="+ outside +"&free="+ free + "&private="+ prive +"&phone="+ phone +"&attache="+ attached;
+		
+		System.out.println(url);
+		
+		JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+				url, null, successListener, errorListener);
+		boolean ok = addRequest(request);
+		if (!ok)
+			errorListener.onErrorResponse(null);
+		
 	}
 }
