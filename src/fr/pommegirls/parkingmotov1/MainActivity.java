@@ -11,9 +11,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
 
-	private FragmentTabHost mTabHost;
+	public FragmentTabHost mTabHost;
 	private MyApp myApp;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

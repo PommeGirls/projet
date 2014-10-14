@@ -4,7 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import fr.pommegirls.parkingmotov1.R;
 
-import fr.pommegirls.parkingmotov1.util.PrefsManager;
 import fr.pommegirls.parkingmotov1.webservice.UserRequest;
 
 public class LoginActivity extends ActionBarActivity {

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
@@ -35,9 +36,11 @@ public class UserRequest extends RequestManager {
 	// Vérification des identifiants
 	public void checkAuthentication(Listener<JSONObject> successListener,
 			ErrorListener errorListener, String email, String password) {
-		String url = getUrl(URL_AUTHENTICATION) + "?email=" + email
-				+ "&password=" + password;
-
+		
+		String toHash = "parkingMoto|user:" + email + "|password:" + password + "|";
+		String hash = Base64.encodeToString(toHash.getBytes(), Base64.DEFAULT);
+		
+		String url = getUrl(URL_AUTHENTICATION) + "?hash=" + hash;
 		JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
 				url, null, successListener, errorListener);
 	
@@ -85,7 +88,7 @@ public class UserRequest extends RequestManager {
 			ErrorListener errorListener, String email, String password ) {
 		
 		String url = getUrl(URL_UPDATE) + sp.getString("ID", "none")
-				+ "&email=" + email + "&password=" + password;
+				+ "?email=" + email + "&password=" + password;
 		
 		JsonObjectRequest request = new JsonObjectRequest(
 				url, null, successListener, errorListener){

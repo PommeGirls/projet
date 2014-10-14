@@ -29,6 +29,7 @@ public class MyAccount extends Fragment {
 	private UserRequest ur;
 	private boolean isConnection;
 	private MyApp myApp;
+	private String addressEmail;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,11 +39,15 @@ public class MyAccount extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		if (isConnection) {
+			if (myApp.getIsConnected()) {
+				showNormalView();
+				isConnection = false;
+   	 		}else{
+				((MainActivity) getActivity()).mTabHost.setCurrentTab(3);
+			}
+		}
 
-		if(myApp.getIsConnected() && isConnection){
-			showNormalView();
-			isConnection = false;
-   	 	}
 	}
 
 	@Override
@@ -65,10 +70,11 @@ public class MyAccount extends Fragment {
    	 	}
 		return view;
 	}
+	
 	public void showNormalView(){
 		ur = new UserRequest(getActivity().getApplicationContext());
 		
-		doGetUser();
+		doFillForm();
 		
 		Button btnModif = (Button) view.findViewById(R.id.btnSave);
 		Button btnLogOut = (Button) view.findViewById(R.id.btnLogOut);
@@ -79,6 +85,7 @@ public class MyAccount extends Fragment {
 				SharedPreferences preferences = getActivity().getSharedPreferences("USER", 0);
 				preferences.edit().clear().commit();
 				myApp.setIsConnected(false);
+				((MainActivity) getActivity()).mTabHost.setCurrentTab(3);
 			}
 		});
 
@@ -121,55 +128,30 @@ public class MyAccount extends Fragment {
 			}
 		});
 	}
-	
-	// Récupération des informations de l'utilisateur
-	private void doGetUser() {
-		Listener<JSONObject> suListener = new Listener<JSONObject>() {
-			@Override
-			public void onResponse(JSONObject json) {
-				doFillForm(json);
-			}
-		};
 
-		ErrorListener erListener = new ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Toast.makeText(getActivity(), error.toString(),
-						Toast.LENGTH_LONG).show();
-			}
-		};
-		// Appel au ws
-		ur.getUser(suListener, erListener);
-		isLoad = true;
-	}
 	
 	// Remplissage du formulaire
-	public void doFillForm(JSONObject json) {
-
+	public void doFillForm() {
 		TextView mail = (TextView) view.findViewById(R.id.userEmail);
-		TextView postIt = (TextView) view.findViewById(R.id.parkingDetail);
-
-		try {
-			if (json.get("email") != null) {
-				mail.setText(json.get("email").toString());
-			}
-
-			if (json.get("postIt") != null) {
-				postIt.setText(json.get("postIt").toString());
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		
+		SharedPreferences preferences = getActivity().getSharedPreferences("USER", 0);
+		String email = preferences.getString("MAIL", "/");
+		
+		mail.setText(email);
 
 	}
 	
 	// Appel de mise a jour
 	public void doUpdateUser(String mail, String npwd) {
-
+		addressEmail = mail;
 		Listener<JSONObject> suListener = new Listener<JSONObject>() {
 			@Override
 			public void onResponse(JSONObject json) {
-				doFillForm(json);
+				SharedPreferences sp = getActivity().getSharedPreferences("USER", 0);
+		    	SharedPreferences.Editor spEditor = sp.edit();
+				spEditor.putString("MAIL", addressEmail);
+				spEditor.commit();
+		    	doFillForm();
 			}
 		};
 
