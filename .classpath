@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="julien/TaskRequest.java" kind="src" path="src"/>
+	<classpathentry excluding="julien/TaskRequest.java|fr/pommegirls/parkingmotov1/Login.java|fr/pommegirls/parkingmotov1/ParkingDetail.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>

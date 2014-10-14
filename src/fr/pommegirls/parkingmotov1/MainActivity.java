@@ -1,18 +1,13 @@
 package fr.pommegirls.parkingmotov1;
 
-import java.util.Properties;
-
 import fr.pommegirls.parkingmotov1.R;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TabHost.OnTabChangeListener;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -25,14 +20,15 @@ public class MainActivity extends ActionBarActivity {
 
 		myApp = ((MyApp) getApplicationContext());
 
-		Properties properties = new Properties();
-		if (properties.getProperty("PREF_USER_APIKEY", "none") != "none") {
+		SharedPreferences sp = getSharedPreferences("USER", 0);
+		
+		if (sp.getString("APIKEY", "none") != "none") {
 			myApp.setIsConnected(true);
 		}
 
-		Bundle b;
 		setContentView(R.layout.bottom_tabs);
 
+		Bundle b;
 		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
@@ -70,26 +66,7 @@ public class MainActivity extends ActionBarActivity {
 				mTabHost.newTabSpec("myAccount").setIndicator("",
 						getResources().getDrawable(R.drawable.account)),
 				MyAccount.class, b);
-		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
-			
-			@Override
-			public void onTabChanged(String tabId) {
-				Fragment f = new Fragment();
-				
-				if(tabId.equals("search"))
-					f = new Search();
-				if(tabId.equals("addParking"))
-					f = new AddParking();
-				if(tabId.equals("favorites"))
-					f = new Favorites();
-				if(tabId.equals("ranking"))
-					f = new Ranking();
-				if(tabId.equals("myAccount"))
-					f = new MyAccount();
-				changeFragment(f);
-				
-			}
-		});
+		
 	}
 
 	@Override
@@ -105,14 +82,5 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	public void changeFragment(Fragment fgt){
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.replace(R.id.realtabcontent,	fgt);
-		ft.addToBackStack(null);
-		ft.commit();
-		//fm.executePendingTransactions();
 	}
 }

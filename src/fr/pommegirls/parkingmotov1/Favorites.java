@@ -2,12 +2,15 @@ package fr.pommegirls.parkingmotov1;
 
 
 import java.util.ArrayList;
+import java.util.Properties;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,13 +21,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import fr.pommegirls.parkingmotov1.R;
 
 import fr.pommegirls.parkingmotov1.util.ListViewAdapterParkings;
+import fr.pommegirls.parkingmotov1.util.PrefsManager;
 import fr.pommegirls.parkingmotov1.webservice.ParkingRequest;
 
 public class Favorites extends Fragment {
@@ -35,9 +42,9 @@ public class Favorites extends Fragment {
 	private ListViewAdapterParkings lviewAdapter;
 	private static final int ACTION_SEE_DETAILS = 0;
 	private static final int ACTION_GO_THERE = 1;
-	
-	private boolean isLoad = false;
-
+	private View v;
+	private boolean isLoad;
+	private boolean isConnection;
 	private ArrayList<String> nameAL;
 	private ArrayList<String> addressAL;
 	private ArrayList<String> latlngAL;
@@ -50,37 +57,56 @@ public class Favorites extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-   	 	myApp = ((MyApp)getActivity().getApplicationContext());
-   	 	if(!myApp.getIsConnected()){
-   	 		Intent intent = new Intent(getActivity(), LoginActivity.class);
-   	 		startActivity(intent);
-   	 	}
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-    	View v = LayoutInflater.from(getActivity()).inflate(R.layout.favorites,
-                null);
-		getActivity().getActionBar().setTitle("Mes favoris");
-		
-		pr = new ParkingRequest(getActivity().getApplicationContext());
-		lvListe = (ListView)  v.findViewById(R.id.listFavorites);
-
-		nameAL = new ArrayList<String>();
+        nameAL = new ArrayList<String>();
 		addressAL = new ArrayList<String>();
 		latlngAL = new ArrayList<String>();
 		idAL = new ArrayList<Integer>();
+    }
+
+    @Override
+	public void onResume() {
+		super.onResume();
 		
+		if(myApp.getIsConnected() && isConnection){
+			showNormalFavoritesView();
+			isConnection = false;
+   	 	}
+		
+	}
+
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+		myApp = ((MyApp)getActivity().getApplicationContext());
+		System.out.println("onCreateView");
+
+		v = LayoutInflater.from(getActivity()).inflate(R.layout.favorites,
+                null);
+		if(!myApp.getIsConnected()){
+			isConnection = true;
+			Intent intent = new Intent(getActivity(), LoginActivity.class);
+   	 		startActivity(intent);
+   	 	}else{
+   	 		showNormalFavoritesView();
+			isConnection = false;
+   	 	}
+		
+        return v;
+    }
+	
+	public void showNormalFavoritesView(){
+		pr = new ParkingRequest(getActivity().getApplicationContext());
+		getActivity().getActionBar().setTitle("Mes favoris");
+	 	lvListe = (ListView)  v.findViewById(R.id.listFavorites);
+   	 	
 		if(!isLoad)
 			loadFavorites();
 		else{
 			showList();
 		}
-		
-        return v;
-    }
-
+	}
+	
+	
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -90,7 +116,6 @@ public class Favorites extends Fragment {
 		Listener<JSONArray> suListener = new Listener<JSONArray>() {
 			@Override
 			public void onResponse(JSONArray json) {
-				System.out.println(json.toString());
 				for (int i = 0; i < json.length(); i++) {
 					JSONObject c;
 					try {
@@ -104,7 +129,7 @@ public class Favorites extends Fragment {
 						nameAL.add(name);
 						addressAL.add(address);
 						idAL.add(id);
-						latlngAL.add(longitude + "," + latitude);
+						latlngAL.add( latitude + "," + longitude);
 
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -123,10 +148,11 @@ public class Favorites extends Fragment {
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				System.out.println(error.toString());
+				Toast.makeText(getActivity(), "Vous n'avez aucun favoris", Toast.LENGTH_LONG).show();
 			}
 		};
 		// Appel au ws
-		pr.getFavoritesParkings(suListener, erListener, 1);
+		pr.getFavoritesParkings(suListener, erListener);
 		isLoad = true;
 	}
 	
@@ -158,11 +184,9 @@ public class Favorites extends Fragment {
 
 		switch (item.getItemId()) {
 			case ACTION_SEE_DETAILS:
-				FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-				ft.replace(R.id.realtabcontent,
-						new ParkingDetail(idAL.get(info.position)));
-				ft.addToBackStack(null);
-				ft.commit();
+				Intent parkingDetailIntent = new Intent(getActivity(), ParkingDetailActivity.class);
+				parkingDetailIntent.putExtra("idParking", idAL.get(info.position));
+				startActivity(parkingDetailIntent);
 		        break;
 		        
 			case ACTION_GO_THERE:

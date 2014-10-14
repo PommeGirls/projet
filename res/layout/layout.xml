@@ -8,9 +8,26 @@
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="wrap_content"
+        android:layout_width="278dp"
         android:layout_height="wrap_content"
-        android:text="Fonctionnalité non disponible"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:gravity="center"
+        android:text="Profitez de toutes les fonctionnalités en créant un compte et en vous y connectant !"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/goRegister"
+        android:layout_width="114dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/round_corner"
+        android:text="S&apos;inscrire" />
+
+    <Button
+        android:id="@+id/goLogin"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/round_corner"
+        android:text="Se connecter" />
 
 </LinearLayout>

@@ -1,6 +1,8 @@
 package fr.pommegirls.parkingmotov1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,9 +44,10 @@ public class Search extends Fragment {
 
 	private TextView searchField;
 	private GoogleMap googleMap;
-	HashMap<String, Integer> cache = new HashMap<String, Integer>();
+	private HashMap<String, Integer> cache = new HashMap<String, Integer>();
 	private ParkingRequest pr;
-
+	private List<Marker> markers;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,15 +65,12 @@ public class Search extends Fragment {
 				parent.removeView(view);
 		}
 
-		try {
-			view = LayoutInflater.from(getActivity()).inflate(R.layout.search,
-					null);
-		} catch (InflateException e) {
-			System.out.println(e);
-		}
+		view = LayoutInflater.from(getActivity()).inflate(R.layout.search,
+				null);
 
 		getActivity().getActionBar().setTitle("Rechercher un parking");
-
+		markers = new ArrayList<Marker>();
+		
 		searchField = (TextView) view.findViewById(R.id.searchField);
 
 		view.findViewById(R.id.searchGo).setOnClickListener(
@@ -168,6 +168,12 @@ public class Search extends Fragment {
 			public void onResponse(String json) {
 				try {
 					JSONArray obj = new JSONArray(json);
+					
+					// Suppression des markers existants
+					if(markers.size() > 0){
+						googleMap.clear();
+					}
+					System.out.println(obj.toString());
 					for (int i = 0; i < obj.length(); i++) {
 
 						JSONObject parking = (JSONObject) obj.get(i);
@@ -181,8 +187,13 @@ public class Search extends Fragment {
 						MarkerOptions m = new MarkerOptions()
 								.position(new LatLng(latitude, longitude))
 								.title(name).snippet(snippet);
-						googleMap.addMarker(m);
+						
+						
+						Marker marker = googleMap.addMarker(m);
+						
+						markers.add(marker);
 						cache.put(name, id);
+						
 						if (i == 0) {
 							LatLng coordinate = new LatLng(latitude, longitude);
 							CameraUpdate yourLocation = CameraUpdateFactory
@@ -263,15 +274,10 @@ public class Search extends Fragment {
 			@Override
 			public void onInfoWindowClick(Marker marker) {
 				MainActivity ma = (MainActivity) getActivity();
-				ma.changeFragment(new ParkingDetail(
-						cache.get(marker.getTitle())));
-				/*
-				 * FragmentTransaction ft =
-				 * getActivity().getSupportFragmentManager().beginTransaction();
-				 * ft.replace(R.id.realtabcontent, new
-				 * ParkingDetail(cache.get(marker.getTitle())));
-				 * ft.addToBackStack(null); ft.commit();
-				 */
+				
+				Intent parkingDetailIntent = new Intent(getActivity(), ParkingDetailActivity.class);
+				parkingDetailIntent.putExtra("idParking", cache.get(marker.getTitle()));
+				startActivity(parkingDetailIntent);
 			}
 
 		});

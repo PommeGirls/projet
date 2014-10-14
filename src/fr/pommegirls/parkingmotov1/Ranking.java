@@ -49,7 +49,7 @@ public class Ranking extends Fragment {
 		
 		v = LayoutInflater.from(getActivity()).inflate(R.layout.ranking, null);
 		getActivity().getActionBar().setTitle("Classement");
-		
+		System.out.println(getActivity().getSharedPreferences("USER", 0).getAll().toString());
 		ur = new UserRequest(getActivity().getApplicationContext());
 		lvListe = (ListView)  v.findViewById(R.id.lvListe);
 

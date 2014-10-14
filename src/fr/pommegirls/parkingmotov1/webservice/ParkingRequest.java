@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 public class ParkingRequest extends RequestManager {
 	public static final String TAG = "ParkingRequest";
@@ -21,8 +22,11 @@ public class ParkingRequest extends RequestManager {
 	private static final String URL_PARKINGS_FAVORITES = "parkingsFavorites/";
 	private static final String URL_CREATE_PARKING = "createParking";
 
+	private SharedPreferences sp;
+	
 	public ParkingRequest(Context context) {
 		super(context);
+		sp = context.getSharedPreferences("USER", 0);
 	}
 	
 	protected static String getUrl(String suffixUrl) {
@@ -58,8 +62,8 @@ public class ParkingRequest extends RequestManager {
 	
 	// Récupération des parkings favoris de l'utilisateur
 	public void getFavoritesParkings(Listener<JSONArray> successListener,
-			ErrorListener errorListener, int id) {
-		String url = getUrl(URL_PARKINGS_FAVORITES) + id;
+			ErrorListener errorListener) {
+		String url = getUrl(URL_PARKINGS_FAVORITES) + sp.getString("ID", "none");
 		
 		JsonArrayRequest request = new JsonArrayRequest(
 				url,  
@@ -69,8 +73,7 @@ public class ParkingRequest extends RequestManager {
 		    @Override
 		    public HashMap<String, String> getHeaders() {
 		        HashMap<String, String> params = new HashMap<String, String>();
-		        //TODO
-		        params.put("Authorization", "da40ba9c0d");
+		        params.put("Authorization", sp.getString("APIKEY", "none"));
 		        return params;
 		    }
 		};

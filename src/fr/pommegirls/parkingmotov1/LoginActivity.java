@@ -3,6 +3,7 @@ package fr.pommegirls.parkingmotov1;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -76,10 +77,9 @@ public class LoginActivity extends ActionBarActivity {
 						String message = json.getString("message");
 						Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 					}else{
-						// TODO : changer de vue
-						Toast.makeText(getApplicationContext(), "Connexion en cours ...", Toast.LENGTH_LONG).show();
-						
+						Toast.makeText(getApplicationContext(), "Veuillez patienter ...", Toast.LENGTH_SHORT).show();
 						savePref(json.getString("id"), json.getString("login"), json.getString("email"), json.getString("apiKey"));
+						finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -102,12 +102,16 @@ public class LoginActivity extends ActionBarActivity {
 	
 	// Enregistrement des informations du user dans les préférences
     public void savePref(String userId, String login, String email, String apiKey){
-    	Editor edit = PrefsManager.getPreferencesEditor(this);
-    	edit.putString("PREF_USER_ID", userId);
-    	edit.putString("PREF_USER_LOGIN", login);
-    	edit.putString("PREF_USER_EMAIL", email);
-    	edit.putString("PREF_USER_APIKEY", apiKey);
-    	edit.commit();
+    	SharedPreferences sp = getSharedPreferences("USER", 0);
+    	SharedPreferences.Editor spEditor = sp.edit();
+    	spEditor.putString("ID", userId);
+    	spEditor.putString("LOGIN", login);
+    	spEditor.putString("MAIL", email);
+    	spEditor.putString("APIKEY", apiKey);
+    	spEditor.commit();
+    	
+    	MyApp myApp = ((MyApp)getApplicationContext());
+    	myApp.setIsConnected(true);
     }
     
 }
