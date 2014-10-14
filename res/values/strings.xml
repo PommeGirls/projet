@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="arround_me">Autour de moi</string>
     <string name="parking_name">Nom du parking</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_parking_detail">ParkingDetailActivity</string>
+    <string name="title_activity_login">Connexion</string>
+    <string name="title_activity_parking_detail">Fiche parking</string>
 
 </resources>

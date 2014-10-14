@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,15 +59,18 @@ public class Search extends Fragment {
 			Bundle savedInstanceState) {
 		if (container == null)
 			return null;
+		
 		if (view != null) {
 			ViewGroup parent = (ViewGroup) view.getParent();
 			if (parent != null)
 				parent.removeView(view);
 		}
-
-		view = LayoutInflater.from(getActivity()).inflate(R.layout.search,
-				null);
-
+		try{
+			view = LayoutInflater.from(getActivity()).inflate(R.layout.search, null);
+		}catch(InflateException e){
+			System.out.println(e);
+		}
+		
 		getActivity().getActionBar().setTitle("Rechercher un parking");
 		markers = new ArrayList<Marker>();
 		
@@ -172,7 +176,6 @@ public class Search extends Fragment {
 					if(markers.size() > 0){
 						googleMap.clear();
 					}
-					System.out.println(obj.toString());
 					for (int i = 0; i < obj.length(); i++) {
 
 						JSONObject parking = (JSONObject) obj.get(i);
@@ -241,7 +244,7 @@ public class Search extends Fragment {
 							Toast.LENGTH_SHORT).show();
 			}
 		} else {
-			getView().findViewById(R.id.map_fragment2).setVisibility(View.GONE);
+			view.findViewById(R.id.map_fragment2).setVisibility(View.GONE);
 		}
 	}
 

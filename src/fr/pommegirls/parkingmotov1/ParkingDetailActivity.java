@@ -94,7 +94,7 @@ public class ParkingDetailActivity extends Activity {
 					&& !suListener.get("phone").equals(null)) {
 				tel.setText(suListener.get("phone").toString());
 			}
-			if (suListener.get("nbSpaces") != null) {
+			if (!suListener.getString("nbSpaces").equals("null")) {
 				nb.setText(suListener.get("nbSpaces").toString());
 			}
 			if (suListener.get("outside") != null
